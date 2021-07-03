@@ -1,0 +1,14 @@
+[package]
+name = "ktr"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+crate-type = ["staticlib"]
+name = "ktr"
+path = "src/lib.rs"
+
+[dependencies]
+libc = "0.2.0"
+sxd-xpath = "0.4.2"
+sxd-document = "0.3.2"
