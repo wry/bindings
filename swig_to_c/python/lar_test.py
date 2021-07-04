@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# PYTHONPATH=$(pwd)/obj ./python/hellob_test.py
+# PYTHONPATH=$(pwd)/build ./python/hellob_test.py
 
 import hellob
 
