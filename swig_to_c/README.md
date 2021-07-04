@@ -1,6 +1,6 @@
-# swig_to_c
+# swig to c
 
-swig is a pretty useful go-to tool when you're tasked with providing a wrapper for your C/C++ library to someone's Python/Perl code;
+swig can be used to generate bindings to several languages
 
 this small example shows how to generate a swig wrapper for Perl, Python and Java (JNI). 
 
