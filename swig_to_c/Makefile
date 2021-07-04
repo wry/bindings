@@ -7,7 +7,7 @@
 # - modulepaths are handled differently for each platform, look into the src files of each to test
 
 ODIR := build
-MODULE := lar
+MODULE := Lar
 
 CXX ?= clang++
 LD ?= ld
@@ -21,10 +21,14 @@ LDFLAGS += -L../c_to_cpp/build -L../c_to_cpp/build/liblar
 SWIGFLAGS := $(INCLUDES)
 
 ifeq ($(LANG),python)
-TARGET := $(ODIR)/lib$(MODULE).so
-RUNCMD := PYTHONPATH=$(ODIR) ./python/hellob_test.py
-CXXFLAGS += -I/usr/include/python2.7
-LDFLAGS += -dylib -llar -lpython -lc++ -lc
+PYTHON_INCLUDES := $(shell python-config --includes)
+PYTHON_PREFIX := $(shell python-config --prefix)
+PYTHON_LIBS := $(shell python-config --libs)
+TARGET := $(ODIR)/_$(MODULE).so
+RUNCMD := PYTHONPATH=$(ODIR) ./python/lar_test.py
+CXXFLAGS += -I$(PYTHON_INCLUDES)
+LDFLAGS += -L$(PYTHON_PREFIX)/lib
+LDFLAGS += -dylib -llar $(PYTHON_LIBS) -lc++ -lc
 SWIGFLAGS += -python
 else ifeq ($(LANG),java)
 TARGET := $(ODIR)/lib$(MODULE).dylib $(ODIR)/Main.class
@@ -45,6 +49,9 @@ all: $(TARGET)
 
 run: $(TARGET)
 	$(RUNCMD)
+
+$(ODIR)/_$(MODULE).so: ../c_to_cpp/build/liblarc.a ../c_to_cpp/build/liblar/liblar.a $(ODIR)/$(MODULE)_$(LANG)_swig.o
+	$(CXX) -shared $(ODIR)/$(MODULE)_$(LANG)_swig.o ../c_to_cpp/build/liblarc.a ../c_to_cpp/build/liblar/liblar.a -o $@ $(LDFLAGS)
 
 $(ODIR)/lib$(MODULE).%: ../c_to_cpp/build/liblarc.a ../c_to_cpp/build/liblar/liblar.a $(ODIR)/$(MODULE)_$(LANG)_swig.o
 	$(CXX) -shared $(ODIR)/$(MODULE)_$(LANG)_swig.o ../c_to_cpp/build/liblarc.a ../c_to_cpp/build/liblar/liblar.a -o $@ $(LDFLAGS)
