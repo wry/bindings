@@ -10,7 +10,7 @@ public class Main
         SWIGTYPE_p_Lar lar = Lar.Lar_new();
 
         // will crash if path incorrect, should pass a char** (cstring.i not implemented for this target)
-        Result result = Lar.Lar_first_release_item_ex(lar, "/tmp/releasesa.rss");
+        Result result = Lar.Lar_first_release_item_ex(lar, "/tmp/releases.rss");
 
         if (result.getResult() == null)
         {
