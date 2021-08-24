@@ -2,20 +2,18 @@
 
 use strict;
 use warnings;
+use Scalar::Util qw( reftype );
 
 use lib 'build';
 use Lar;
 
 my $lar = Lar::Lar_new();
 
-# will crash if path incorrect, should pass a char**
-my $error = undef;
-my $release = Lar::Lar_first_release_item($lar, "/tmp/releases.rss", $error);
+my $release = Lar::Lar_first_release_item($lar, "/tmp/releases.rss");
 
-if (!defined($release))
+if (ref($release) ne '_p_Release')
 {
-    print("Error : $error");
-    free($error);
+    print("Error : $release\n");
     exit 1;
 }
 

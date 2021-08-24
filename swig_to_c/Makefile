@@ -14,6 +14,7 @@ LD ?= ld
 SWIG ?= swig
 JAVAC ?= javac
 LANG ?= perl
+MKDIR ?= mkdir
 
 INCLUDES += -I../c_to_cpp/src
 CXXFLAGS += $(INCLUDES)
@@ -59,7 +60,8 @@ $(ODIR)/lib$(MODULE).%: ../c_to_cpp/build/liblarc.a ../c_to_cpp/build/liblar/lib
 $(ODIR)/$(MODULE)_$(LANG)_swig.o: $(ODIR)/$(MODULE)_$(LANG)_swig.cxx
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(ODIR)/$(MODULE)_$(LANG)_swig.cxx: swig/$(MODULE).i
+$(ODIR)/$(MODULE)_$(LANG)_swig.cxx: swig/$(MODULE)_$(LANG).i
+	$(MKDIR) build || true
 	$(SWIG) $(SWIGFLAGS) -o $@ $<
 
 $(ODIR)/$(MODULE).class: $(ODIR)/$(MODULE).java
